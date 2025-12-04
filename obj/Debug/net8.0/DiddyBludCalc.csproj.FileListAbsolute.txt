@@ -1,0 +1,15 @@
+/workspaces/DiddyBludCalc/bin/Debug/net8.0/DiddyBludCalc
+/workspaces/DiddyBludCalc/bin/Debug/net8.0/DiddyBludCalc.deps.json
+/workspaces/DiddyBludCalc/bin/Debug/net8.0/DiddyBludCalc.runtimeconfig.json
+/workspaces/DiddyBludCalc/bin/Debug/net8.0/DiddyBludCalc.dll
+/workspaces/DiddyBludCalc/bin/Debug/net8.0/DiddyBludCalc.pdb
+/workspaces/DiddyBludCalc/obj/Debug/net8.0/DiddyBludCalc.GeneratedMSBuildEditorConfig.editorconfig
+/workspaces/DiddyBludCalc/obj/Debug/net8.0/DiddyBludCalc.AssemblyInfoInputs.cache
+/workspaces/DiddyBludCalc/obj/Debug/net8.0/DiddyBludCalc.AssemblyInfo.cs
+/workspaces/DiddyBludCalc/obj/Debug/net8.0/DiddyBludCalc.csproj.CoreCompileInputs.cache
+/workspaces/DiddyBludCalc/obj/Debug/net8.0/DiddyBludCalc.sourcelink.json
+/workspaces/DiddyBludCalc/obj/Debug/net8.0/DiddyBludCalc.dll
+/workspaces/DiddyBludCalc/obj/Debug/net8.0/refint/DiddyBludCalc.dll
+/workspaces/DiddyBludCalc/obj/Debug/net8.0/DiddyBludCalc.pdb
+/workspaces/DiddyBludCalc/obj/Debug/net8.0/DiddyBludCalc.genruntimeconfig.cache
+/workspaces/DiddyBludCalc/obj/Debug/net8.0/ref/DiddyBludCalc.dll

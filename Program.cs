@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-// Clean, fixed, FULLY WORKING VERSION
-// Returns fractions if input contains fractions
-// Supports PEMDAS, decimals, fractions
 
 namespace ExpandableCalculator
 {
