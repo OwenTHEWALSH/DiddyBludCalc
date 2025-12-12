@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-
 namespace ExpandableCalculator
 {
     public static class Calculator
@@ -21,6 +20,10 @@ namespace ExpandableCalculator
             bool inputHadFraction = expr.Contains("/");
             var rpn = ToRPN(expr);
             double val = EvalRPN(rpn);
+
+            // Round to the nearest hundredth
+            val = Math.Round(val, 2);
+
             string frac = inputHadFraction ? ToFraction(val) : val.ToString();
             return (val, frac);
         }
@@ -134,13 +137,13 @@ namespace ExpandableCalculator
             while (true)
             {
                 Console.Write("Enter expression: ");
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8600
                 string input = Console.ReadLine();
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning restore CS8600
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
+#pragma warning disable CS8602
                 if (input.ToLower() == "exit") break;
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+#pragma warning restore CS8602
 
                 try
                 {
