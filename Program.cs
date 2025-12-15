@@ -13,6 +13,7 @@ namespace ExpandableCalculator
             {"-", (1, true, (a,b) => a - b)},
             {"*", (2, true, (a,b) => a * b)},
             {"/", (2, true, (a,b) => a / b)},
+            {"%", (2, true, (a,b) => (a / b) * 100)}
         };
 
         public static (double value, string fraction) Evaluate(string expr)
@@ -21,7 +22,6 @@ namespace ExpandableCalculator
             var rpn = ToRPN(expr);
             double val = EvalRPN(rpn);
 
-            // Round to the nearest hundredth
             val = Math.Round(val, 2);
 
             string frac = inputHadFraction ? ToFraction(val) : val.ToString();
