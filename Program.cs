@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace ExpandableCalculator
 {
@@ -16,8 +17,23 @@ namespace ExpandableCalculator
             {"%", (2, true, (a,b) => (a / b) * 100)}
         };
 
-        public static (double value, string fraction) Evaluate(string expr)
+        public static (double value, string fraction, bool isPercent) Evaluate(string expr)
         {
+            // Handle: "What percent of 25 is 5?"
+            var match = Regex.Match(
+                expr,
+                @"what\s+percent\s+of\s+([\d\.]+)\s+is\s+([\d\.]+)",
+                RegexOptions.IgnoreCase
+            );
+
+            if (match.Success)
+            {
+                double whole = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
+                double part = double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
+                double percent = Math.Round((part / whole) * 100, 2);
+                return (percent, percent.ToString(CultureInfo.InvariantCulture), true);
+            }
+
             bool inputHadFraction = expr.Contains("/");
             var rpn = ToRPN(expr);
             double val = EvalRPN(rpn);
@@ -25,7 +41,7 @@ namespace ExpandableCalculator
             val = Math.Round(val, 2);
 
             string frac = inputHadFraction ? ToFraction(val) : val.ToString();
-            return (val, frac);
+            return (val, frac, false);
         }
 
         private static double ParseNumber(string token)
@@ -148,7 +164,11 @@ namespace ExpandableCalculator
                 try
                 {
                     var result = Calculator.Evaluate(input);
-                    Console.WriteLine($"= {result.fraction} (≈ {result.value})\n");
+
+                    if (result.isPercent)
+                        Console.WriteLine($"= {result.value}%\n");
+                    else
+                        Console.WriteLine($"= {result.fraction} (≈ {result.value})\n");
                 }
                 catch (Exception ex)
                 {
