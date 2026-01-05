@@ -7,8 +7,8 @@ namespace ExpandableCalculator
 {
     public static class Calculator
     {
-        private static readonly Dictionary<string, (int precedence, bool leftAssoc, Func<double,double,double> op)> Operators =
-            new Dictionary<string, (int, bool, Func<double,double,double>)>
+        private static readonly Dictionary<string, (int precedence, bool leftAssoc, Func<double, double, double> op)> Operators =
+            new Dictionary<string, (int, bool, Func<double, double, double>)>
         {
             {"+", (1, true, (a,b) => a + b)},
             {"-", (1, true, (a,b) => a - b)},
@@ -25,6 +25,24 @@ namespace ExpandableCalculator
                 @"what\s+percent\s+of\s+([\d\.]+)\s+is\s+([\d\.]+)",
                 RegexOptions.IgnoreCase
             );
+            // Handle: "Convert the following decimal to a percent: 1.15"
+            var percentConvert = Regex.Match(
+                expr,
+                @"convert.*decimal.*percent[:\s]*([\d\.]+)|([\d\.]+)\s*(to|as)\s*percent",
+                RegexOptions.IgnoreCase
+            );
+
+            if (percentConvert.Success)
+            {
+                string numStr = percentConvert.Groups[1].Success
+                    ? percentConvert.Groups[1].Value
+                    : percentConvert.Groups[2].Value;
+
+                double number = double.Parse(numStr, CultureInfo.InvariantCulture);
+                double percent = Math.Round(number * 100, 2);
+
+                return (percent, percent.ToString(CultureInfo.InvariantCulture), true);
+            }
 
             if (match.Success)
             {
@@ -69,7 +87,7 @@ namespace ExpandableCalculator
                 if (char.IsDigit(expr[i]))
                 {
                     int start = i;
-                    while (i < expr.Length && (char.IsDigit(expr[i]) || expr[i]=='.' || expr[i]=='/')) i++;
+                    while (i < expr.Length && (char.IsDigit(expr[i]) || expr[i] == '.' || expr[i] == '/')) i++;
                     output.Add(expr.Substring(start, i - start));
                     continue;
                 }
@@ -113,7 +131,7 @@ namespace ExpandableCalculator
                 {
                     double b = stack.Pop();
                     double a = stack.Pop();
-                    stack.Push(Operators[token].op(a,b));
+                    stack.Push(Operators[token].op(a, b));
                 }
                 else stack.Push(ParseNumber(token));
             }
@@ -131,7 +149,7 @@ namespace ExpandableCalculator
             for (int d = 1; d <= 5000; d++)
             {
                 int n = (int)Math.Round(value * d);
-                double err = Math.Abs(value - (double)n/d);
+                double err = Math.Abs(value - (double)n / d);
                 if (err < bestErr)
                 {
                     bestErr = err;

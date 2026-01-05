@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DiddyBludCalc")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0934ff7fe0618f9260d740dd9c70ce37281ab767")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7f2bb1ea464d3aef6afa74907beeacf97db638c2")]
 [assembly: System.Reflection.AssemblyProductAttribute("DiddyBludCalc")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DiddyBludCalc")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
