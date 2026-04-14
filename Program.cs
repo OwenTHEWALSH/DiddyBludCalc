@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace ExpandableCalculator
@@ -44,6 +45,52 @@ namespace ExpandableCalculator
                 return (percent, percent.ToString(CultureInfo.InvariantCulture), true);
             }
 
+            // Handle: "Estimate what it will cost to purchase 50 new computers if an average new computer costs $2,000."
+            var estimateCostMatch = Regex.Match(
+                expr,
+                @"estimate.*?(\d+(?:\.\d+)?).*?\$?(\d+(?:\.\d+)?)",
+                RegexOptions.IgnoreCase
+            );
+            if (estimateCostMatch.Success && expr.IndexOf("computer", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                double quantity = double.Parse(estimateCostMatch.Groups[1].Value, CultureInfo.InvariantCulture);
+                double unitCost = double.Parse(estimateCostMatch.Groups[2].Value, CultureInfo.InvariantCulture);
+                double estimate = Math.Round(quantity * unitCost, 2);
+                return (estimate, estimate.ToString(CultureInfo.InvariantCulture), false);
+            }
+
+            // Handle: "It was estimated that a job would cost $1,200, but it ended up costing $1,400."
+            if (expr.IndexOf("estimate", StringComparison.OrdinalIgnoreCase) >= 0 &&
+                (expr.IndexOf("actual", StringComparison.OrdinalIgnoreCase) >= 0 || expr.IndexOf("ended", StringComparison.OrdinalIgnoreCase) >= 0))
+            {
+                var accuracyValues = ExtractNumbers(expr);
+                if (accuracyValues.Count >= 2)
+                {
+                    double estimateValue = accuracyValues[0];
+                    double actualValue = accuracyValues[1];
+                    double accuracy = Math.Round(((actualValue - estimateValue) / estimateValue) * 100, 2);
+                    return (accuracy, accuracy.ToString(CultureInfo.InvariantCulture), true);
+                }
+            }
+
+            // Handle: "average of 120, 80, 100"
+            var averageMatch = Regex.Match(
+                expr,
+                @"(?:average|mean)\s+(?:of|of the|size of|value of)?\s*(.+)",
+                RegexOptions.IgnoreCase
+            );
+            if (averageMatch.Success)
+            {
+                var values = ExtractNumbers(averageMatch.Groups[1].Value);
+                if (values.Count >= 2)
+                {
+                    double average = Math.Round(values.Average(), 2);
+                    bool averageHadFraction = averageMatch.Groups[1].Value.Contains("/");
+                    string fraction = averageHadFraction ? ToFraction(average) : average.ToString(CultureInfo.InvariantCulture);
+                    return (average, fraction, false);
+                }
+            }
+
             if (match.Success)
             {
                 double whole = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
@@ -72,6 +119,17 @@ namespace ExpandableCalculator
                 return num / den;
             }
             return double.Parse(token, CultureInfo.InvariantCulture);
+        }
+
+        private static List<double> ExtractNumbers(string input)
+        {
+            var values = new List<double>();
+            string cleaned = input.Replace("$", string.Empty).Replace(",", string.Empty);
+            foreach (Match match in Regex.Matches(cleaned, @"-?\d+(?:\.\d+)?(?:/\d+)?"))
+            {
+                values.Add(ParseNumber(match.Value));
+            }
+            return values;
         }
 
         private static List<string> ToRPN(string expr)

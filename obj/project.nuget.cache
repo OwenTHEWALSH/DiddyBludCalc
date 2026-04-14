@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "I7OIxrmRCM8=",
+  "dgSpecHash": "WWL1PNAB0I0=",
   "success": true,
   "projectFilePath": "/workspaces/DiddyBludCalc/DiddyBludCalc.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/home/codespace/.nuget/packages/microsoft.netcore.app.ref/8.0.22/microsoft.netcore.app.ref.8.0.22.nupkg.sha512",
+    "/home/codespace/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.22/microsoft.aspnetcore.app.ref.8.0.22.nupkg.sha512",
+    "/home/codespace/.nuget/packages/microsoft.netcore.app.host.linux-x64/8.0.22/microsoft.netcore.app.host.linux-x64.8.0.22.nupkg.sha512"
+  ],
   "logs": []
 }
